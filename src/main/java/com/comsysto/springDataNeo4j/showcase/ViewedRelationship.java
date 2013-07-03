@@ -27,6 +27,23 @@ public class ViewedRelationship
     }
 
 
+    public Product getProductEnd() {
+        return productEnd;
+    }
+
+    public void setProductEnd(Product productEnd) {
+        this.productEnd = productEnd;
+    }
+
+    public Product getProductStart() {
+        return productStart;
+    }
+
+    public void setProductStart(Product productStart) {
+        this.productStart = productStart;
+    }
+
+
     public Integer getCount() {
         return this.count;
     }

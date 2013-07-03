@@ -18,7 +18,7 @@ public class Product extends IdentifiableEntity {
     private String productName;
 
     @RelatedToVia(type = RelationshipTypes.VIEWED)
-    private Set<Product> productsViewed = new HashSet<Product>();
+    private Set<ViewedRelationship> productsViewed = new HashSet<ViewedRelationship>();
 
 
     public Product() {/* NOOP */}
@@ -48,16 +48,23 @@ public class Product extends IdentifiableEntity {
     }
 
     public Set<Product> getProductsViewed() {
-        return productsViewed;
+
+        Set viewedProducts = new HashSet<Product>();
+
+        for (ViewedRelationship viewedRelationship : this.productsViewed) {
+            viewedProducts.add(viewedRelationship.getProductEnd());
+        }
+
+        return viewedProducts;
     }
 
-    public void setProductsViewed(Set<Product> productsViewed) {
+    public void setProductsViewed(Set<ViewedRelationship> productsViewed) {
         this.productsViewed = productsViewed;
     }
 
     public void addProductViewed(Product productViewed)
     {
-        productsViewed.add(productViewed);
+        productsViewed.add(new ViewedRelationship(this, productViewed));
     }
 
 

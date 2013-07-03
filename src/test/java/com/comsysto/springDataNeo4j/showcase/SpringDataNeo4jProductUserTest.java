@@ -20,11 +20,12 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:com/comsysto/springDataNeo4j/showcase/related-to-via-test-context.xml"})
 @Transactional
 public class SpringDataNeo4jProductUserTest {
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     GraphDatabaseService graphDatabaseService;
@@ -72,7 +73,7 @@ public class SpringDataNeo4jProductUserTest {
 
 
         List<User> allUsers = userRepository.findAll().as(List.class);
-        assertEquals("there should be three users in the user repository", 1, allUsers.size());
+        assertEquals("there should be three users in the user repository", 3, allUsers.size());
 
         Set<Product> clickedProducts = allUsers.get(0).getClickedProducts();
         assertEquals("Monika Jordan should have three clicked products", 3, clickedProducts.size());

@@ -18,7 +18,7 @@ public class User extends IdentifiableEntity {
     private Product clickedBofore = null;
 
     @RelatedToVia(type = RelationshipTypes.CLICKED)
-    private Set<Product> clickedProducts = new HashSet<Product>();
+    private Set<ClickedRelationship> clickedProducts = new HashSet<ClickedRelationship>();
 
 
     public User() {/* NOOP */}
@@ -47,6 +47,12 @@ public class User extends IdentifiableEntity {
     }
 
     public Set<Product> getClickedProducts() {
+        Set clickedProducts = new HashSet<Product>();
+
+        for (ClickedRelationship clickedRelationship : this.clickedProducts) {
+            clickedProducts.add(clickedRelationship.getProduct());
+        }
+
         return clickedProducts;
     }
 
@@ -57,7 +63,7 @@ public class User extends IdentifiableEntity {
             this.clickedBofore.addProductViewed(clickedProduct);
         }
 
-        this.clickedProducts.add(clickedProduct);
+        this.clickedProducts.add(new ClickedRelationship(this, clickedProduct));
 
         //clickedProduct.addUserClicked(this);
 
