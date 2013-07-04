@@ -10,13 +10,14 @@ public class ClickedRelationship
     private Long graphId;
 
     @StartNode
+    @Fetch
     private User user;
 
     @EndNode
     @Fetch
     private Product product;
 
-    private Integer count;
+    private int count = 1;
 
     public ClickedRelationship() {/* NOOP */}
 
@@ -43,12 +44,16 @@ public class ClickedRelationship
     }
 
 
-    public Integer getCount() {
+    public int getCount() {
         return this.count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
+    }
+
+    public void incrementCount () {
+        this.count++;
     }
 
     @Override
@@ -59,7 +64,6 @@ public class ClickedRelationship
         ClickedRelationship that = (ClickedRelationship) o;
 
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        if (count != null ? !count.equals(that.count) : that.count != null) return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
 
         return true;
@@ -67,9 +71,9 @@ public class ClickedRelationship
 
     @Override
     public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
+        int result = 0;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
-        result = 31 * result + (count != null ? count.hashCode() : 0);
         return result;
     }
 }

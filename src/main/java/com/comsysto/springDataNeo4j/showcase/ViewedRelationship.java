@@ -10,13 +10,14 @@ public class ViewedRelationship
     private Long graphId;
 
     @StartNode
+    @Fetch
     private Product productStart;
 
     @EndNode
     @Fetch
     private Product productEnd;
 
-    private Integer count;
+    private int count = 1;
 
     public ViewedRelationship() {/* NOOP */}
 
@@ -44,12 +45,16 @@ public class ViewedRelationship
     }
 
 
-    public Integer getCount() {
+    public int getCount() {
         return this.count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
+    }
+
+    public void incrementCount () {
+        this.count++;
     }
 
     @Override
@@ -59,19 +64,17 @@ public class ViewedRelationship
 
         ViewedRelationship that = (ViewedRelationship) o;
 
-        if (productStart != null ? !productStart.equals(that.productStart) : that.productStart != null) return false;
         if (productEnd != null ? !productEnd.equals(that.productEnd) : that.productEnd != null) return false;
-        if (count != null ? !count.equals(that.count) : that.count != null) return false;
+        if (productStart != null ? !productStart.equals(that.productStart) : that.productStart != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = productStart != null ? productStart.hashCode() : 0;
+        int result = 0;
+        result = 31 * result + (productStart != null ? productStart.hashCode() : 0);
         result = 31 * result + (productEnd != null ? productEnd.hashCode() : 0);
-        result = 31 * result + (count != null ? count.hashCode() : 0);
         return result;
     }
-
 }

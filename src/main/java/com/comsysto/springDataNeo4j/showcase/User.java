@@ -1,6 +1,8 @@
 package com.comsysto.springDataNeo4j.showcase;
 
-import org.springframework.data.neo4j.annotation.*;
+import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedToVia;
 import org.springframework.data.neo4j.support.index.IndexType;
 
 import java.util.HashSet;
@@ -9,16 +11,16 @@ import java.util.Set;
 @NodeEntity
 public class User extends IdentifiableEntity {
 
-    @Indexed(indexName = "userId")
+    @Indexed(unique = true)
     private String userId;
 
     @Indexed(indexType = IndexType.FULLTEXT, indexName = "userName")
     private String userName;
 
-    private Product clickedBofore = null;
+    private Product clickedBefore;
 
     @RelatedToVia(type = RelationshipTypes.CLICKED)
-    private Set<ClickedRelationship> clickedProducts = new HashSet<ClickedRelationship>();
+    private Set<ClickedRelationship> clickedProductsRelationships = new HashSet<ClickedRelationship>();
 
 
     public User() {/* NOOP */}
@@ -46,28 +48,46 @@ public class User extends IdentifiableEntity {
         this.userName = userName;
     }
 
-    public Set<Product> getClickedProducts() {
+    public Product getClickedBefore() {
+        return clickedBefore;
+    }
+
+    public Set<Product> getAllClickedProducts() {
         Set clickedProducts = new HashSet<Product>();
 
-        for (ClickedRelationship clickedRelationship : this.clickedProducts) {
+        for (ClickedRelationship clickedRelationship : this.clickedProductsRelationships) {
             clickedProducts.add(clickedRelationship.getProduct());
         }
 
         return clickedProducts;
     }
 
+    public Set<ClickedRelationship> getClickedProductsRelationships() {
+        return clickedProductsRelationships;
+    }
+
     public void addClickedProduct(Product clickedProduct)
     {
+        ClickedRelationship clickedRelationship = new ClickedRelationship(this, clickedProduct);
 
-        if (this.clickedBofore != null) {
-            this.clickedBofore.addProductViewed(clickedProduct);
+        if (this.clickedBefore != null) {
+            this.clickedBefore.addProductViewed(clickedProduct);
         }
 
-        this.clickedProducts.add(new ClickedRelationship(this, clickedProduct));
+        if (this.clickedProductsRelationships.contains(clickedRelationship))
+        {
+             for(ClickedRelationship clickRel : this.clickedProductsRelationships) {
+                 if (clickRel.getProduct().equals(clickedProduct)) {
+                     clickRel.incrementCount();
+                     break;
+                 }
+             }
+        }
+        else {
+            this.clickedProductsRelationships.add(clickedRelationship);
+        }
 
-        //clickedProduct.addUserClicked(this);
-
-        this.clickedBofore = clickedProduct;
+        this.clickedBefore = clickedProduct;
 
     }
 
@@ -77,7 +97,7 @@ public class User extends IdentifiableEntity {
                 "graphId=" + this.getGraphId() +
                 ", userId=" + this.userId +
                 ", userName=" + this.userName +
-                //", #clickedProducts=" + this.clickedProducts.size() +
+                //", #clickedProductsRelationships=" + this.clickedProductsRelationships.size() +
                 '}';
     }
 

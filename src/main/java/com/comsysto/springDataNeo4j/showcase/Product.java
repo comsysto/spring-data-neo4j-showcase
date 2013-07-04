@@ -11,14 +11,14 @@ import java.util.Set;
 @NodeEntity
 public class Product extends IdentifiableEntity {
 
-    @Indexed(indexName = "productId")
+    @Indexed(unique = true)
     private String productId;
 
     @Indexed(indexType = IndexType.FULLTEXT, indexName = "productName")
     private String productName;
 
     @RelatedToVia(type = RelationshipTypes.VIEWED)
-    private Set<ViewedRelationship> productsViewed = new HashSet<ViewedRelationship>();
+    private Set<ViewedRelationship> productsViewedRelationships = new HashSet<ViewedRelationship>();
 
 
     public Product() {/* NOOP */}
@@ -47,24 +47,41 @@ public class Product extends IdentifiableEntity {
         this.productName = productName;
     }
 
-    public Set<Product> getProductsViewed() {
+    public Set<ViewedRelationship> getProductsViewedRelationships() {
+        return productsViewedRelationships;
+    }
+
+    public Set<Product> getAllProductsViewed() {
 
         Set viewedProducts = new HashSet<Product>();
 
-        for (ViewedRelationship viewedRelationship : this.productsViewed) {
+        for (ViewedRelationship viewedRelationship : this.productsViewedRelationships) {
             viewedProducts.add(viewedRelationship.getProductEnd());
         }
 
         return viewedProducts;
     }
 
-    public void setProductsViewed(Set<ViewedRelationship> productsViewed) {
-        this.productsViewed = productsViewed;
+    public void setProductsViewedRelationships(Set<ViewedRelationship> productsViewedRelationships) {
+        this.productsViewedRelationships = productsViewedRelationships;
     }
 
     public void addProductViewed(Product productViewed)
     {
-        productsViewed.add(new ViewedRelationship(this, productViewed));
+        ViewedRelationship viewedRelationship = new ViewedRelationship(this, productViewed);
+
+        if (this.productsViewedRelationships.contains(viewedRelationship))
+        {
+            for(ViewedRelationship viewedRel : this.productsViewedRelationships) {
+                if (viewedRel.getProductEnd().equals(productViewed)) {
+                    viewedRel.incrementCount();
+                    break;
+                }
+            }
+        }
+        else {
+            productsViewedRelationships.add(viewedRelationship);
+        }
     }
 
 
@@ -74,7 +91,7 @@ public class Product extends IdentifiableEntity {
                 "graphId=" + this.getGraphId() +
                 ", productId=" + productId +
                 ", productName=" + productName +
-                //", #productsViewed=" + productsViewed.size() +
+                //", #productsViewedRelationships=" + productsViewedRelationships.size() +
                 //", #userClicked=" + usersClicked.size() +
                 '}';
     }

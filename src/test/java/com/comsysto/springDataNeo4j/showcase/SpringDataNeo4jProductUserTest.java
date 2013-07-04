@@ -34,26 +34,28 @@ public class SpringDataNeo4jProductUserTest {
     Product pizzaMargarita, pizzaFungi, pizzaSalami, pizzaVegitarian, pizzaRustica;
 
     public void createSzenario () {
+
         jordan = createUser("MJ", "Monika Jordan");
         pippen = createUser("SP", "Sandra Pippen");
         miller = createUser("JM", "John Miller");
 
         pizzaMargarita = createProduct("Pizza_1", "Pizza Margarita");
-        pizzaFungi = createProduct("Pizza_1", "Pizza Fungi");
-        pizzaSalami = createProduct("Pizza_1", "Pizza Salami");
-        pizzaVegitarian = createProduct("Pizza_1", "Pizza Vegitarian");
-        pizzaRustica = createProduct("Pizza_1", "Pizza Rustica");
+        pizzaFungi = createProduct("Pizza_2", "Pizza Fungi");
+        pizzaSalami = createProduct("Pizza_3", "Pizza Salami");
+        pizzaVegitarian = createProduct("Pizza_4", "Pizza Vegitarian");
+        pizzaRustica = createProduct("Pizza_5", "Pizza Rustica");
 
-        jordan.addClickedProduct(pizzaMargarita);
-        jordan.addClickedProduct(pizzaFungi);
-        jordan.addClickedProduct(pizzaSalami);
+        userClickedProduct(jordan, pizzaMargarita);
+        userClickedProduct(jordan, pizzaFungi);
+        userClickedProduct(jordan, pizzaSalami);
 
-        pippen.addClickedProduct(pizzaMargarita);
-        pippen.addClickedProduct(pizzaVegitarian);
-        pippen.addClickedProduct(pizzaRustica);
+        userClickedProduct(pippen, pizzaMargarita);
+        userClickedProduct(pippen, pizzaVegitarian);
+        userClickedProduct(pippen, pizzaRustica);
+        userClickedProduct(pippen, pizzaMargarita);
+        userClickedProduct(pippen, pizzaVegitarian);
 
-        miller.addClickedProduct(pizzaFungi);
-
+        userClickedProduct(miller, pizzaFungi);
     }
 
     @Test
@@ -75,7 +77,7 @@ public class SpringDataNeo4jProductUserTest {
         List<User> allUsers = userRepository.findAll().as(List.class);
         assertEquals("there should be three users in the user repository", 3, allUsers.size());
 
-        Set<Product> clickedProducts = allUsers.get(0).getClickedProducts();
+        Set<Product> clickedProducts = allUsers.get(0).getAllClickedProducts();
         assertEquals("Monika Jordan should have three clicked products", 3, clickedProducts.size());
         assertTrue("The two products Monika Jordan clicked on should be pizza margarita and pizza fungi",
                 clickedProducts.contains(pizzaMargarita) && clickedProducts.contains(pizzaFungi) && clickedProducts.contains(pizzaSalami));
@@ -94,7 +96,6 @@ public class SpringDataNeo4jProductUserTest {
         assertTrue("using this cypher query should return a list with also viewed products without the ones Miller already viewed",
                 alsoViewedProducts.contains(pizzaVegitarian));
 
-
     }
 
     private Product createProduct(String id, String name) {
@@ -103,6 +104,14 @@ public class SpringDataNeo4jProductUserTest {
 
     private User createUser(String id, String name) {
         return userRepository.save(new User(id, name));
+    }
+
+    private void userClickedProduct(User user, Product product) {
+
+        user.addClickedProduct(product);
+
+        userRepository.save(user);
+        productRepository.save(product);
     }
 
     @After
