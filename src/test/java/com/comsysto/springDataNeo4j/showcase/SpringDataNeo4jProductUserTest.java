@@ -1,6 +1,7 @@
 package com.comsysto.springDataNeo4j.showcase;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,6 +35,7 @@ public class SpringDataNeo4jProductUserTest {
     User jordan, pippen, miller;
     Product pizzaMargarita, pizzaFungi, pizzaSalami, pizzaVegitarian, pizzaRustica;
 
+    @Before
     public void createSzenario () {
 
         jordan = createUser("MJ", "Monika Jordan");
@@ -59,12 +62,9 @@ public class SpringDataNeo4jProductUserTest {
     }
 
     @Test
-    public void testClickedRelationships() {
-
-        createSzenario();
+    public void testProduts() {
 
         //Load and check relations
-
         List<Product> allProducts = productRepository.findAll().as(List.class);
         assertEquals("there should be three products in the products repository", 5, allProducts.size());
 
@@ -73,6 +73,9 @@ public class SpringDataNeo4jProductUserTest {
                 allProducts.contains(pizzaSalami) && allProducts.contains(pizzaVegitarian) &&
                 allProducts.contains(pizzaRustica));
 
+    }
+    @Test
+    public void testUsers() {
 
         List<User> allUsers = userRepository.findAll().as(List.class);
         assertEquals("there should be three users in the user repository", 3, allUsers.size());
@@ -81,20 +84,23 @@ public class SpringDataNeo4jProductUserTest {
         assertEquals("Monika Jordan should have three clicked products", 3, clickedProducts.size());
         assertTrue("The two products Monika Jordan clicked on should be pizza margarita and pizza fungi",
                 clickedProducts.contains(pizzaMargarita) && clickedProducts.contains(pizzaFungi) && clickedProducts.contains(pizzaSalami));
-        }
+    }
 
     @Test
-    public void testNamedCypherQuerys() {
-
-        createSzenario();
+    public void testfindOtherUsersAlsoViewedProductsCypherQuery() {
 
         List<Product> alsoViewedProducts = productRepository.findOtherUsersAlsoViewedProducts(pizzaMargarita.getProductId());
+        assertEquals("there should be two products recommended", 2, alsoViewedProducts.size());
         assertTrue("using this cypher query should return a list with also viewed products",
                 alsoViewedProducts.contains(pizzaFungi) && alsoViewedProducts.contains(pizzaVegitarian));
+    }
+    @Test
+    public void testfindOtherUsersAlsoViewedProductsWithoutAlreadyViewedCypherQuery() {
 
         List<Product> alsoViewedProductsWithoutAlreadyViewed = productRepository.findOtherUsersAlsoViewedProductsWithoutAlreadyViewed(pizzaMargarita.getProductId(), miller.getUserId());
+        assertEquals("there should be one product recommended", 1, alsoViewedProductsWithoutAlreadyViewed.size());
         assertTrue("using this cypher query should return a list with also viewed products without the ones Miller already viewed",
-                alsoViewedProducts.contains(pizzaVegitarian));
+                alsoViewedProductsWithoutAlreadyViewed.contains(pizzaVegitarian));
 
     }
 

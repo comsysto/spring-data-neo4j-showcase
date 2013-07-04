@@ -26,7 +26,7 @@ public interface ProductRepository extends GraphRepository<Product> {
     List<Product> findAllProductsSortedByName();
 
     @Query("START product=node:Product(productId={productId}), user=node:User(userId={userId}) " +
-            "MATCH user-[clicked:CLICKED]->product-[viewed:VIEWED]->otherProduct " +
+            "MATCH product-[viewed:VIEWED]->otherProduct " +
             "WHERE not(user-[:CLICKED]->otherProduct) " +
             "RETURN otherProduct " +
             "ORDER BY viewed.count DESC " +

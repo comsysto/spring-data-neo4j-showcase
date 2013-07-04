@@ -8,6 +8,4 @@ public final class RelationshipTypes {
 
     public static final String CLICKED = "CLICKED";
     public static final String VIEWED = "VIEWED";
-
-    public static final String CLICKED_BEFORE = "CLICKED_BEFORE";
 }
