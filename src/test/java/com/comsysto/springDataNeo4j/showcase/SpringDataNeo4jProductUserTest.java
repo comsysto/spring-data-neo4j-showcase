@@ -65,7 +65,7 @@ public class SpringDataNeo4jProductUserTest {
 
         //Load and check relations
 
-        List<Player> allProducts = productRepository.findAll().as(List.class);
+        List<Product> allProducts = productRepository.findAll().as(List.class);
         assertEquals("there should be three products in the products repository", 5, allProducts.size());
 
         assertTrue("saved and loaded products should be equal",
