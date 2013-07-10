@@ -17,8 +17,8 @@ public class Product extends IdentifiableEntity {
     @Indexed(indexType = IndexType.FULLTEXT, indexName = "productName")
     private String productName;
 
-    @RelatedToVia(type = RelationshipTypes.VIEWED)
-    private Set<ViewedRelationship> productsViewedRelationships = new HashSet<ViewedRelationship>();
+    @RelatedToVia(type = RelationshipTypes.RECOMMEND)
+    private Set<RecommendRelationship> productsRecommendRelationships = new HashSet<RecommendRelationship>();
 
 
     public Product() {/* NOOP */}
@@ -47,40 +47,40 @@ public class Product extends IdentifiableEntity {
         this.productName = productName;
     }
 
-    public Set<ViewedRelationship> getProductsViewedRelationships() {
-        return productsViewedRelationships;
+    public Set<RecommendRelationship> getProductsRecommendRelationships() {
+        return productsRecommendRelationships;
     }
 
-    public Set<Product> getAllProductsViewed() {
+    public Set<Product> getAllProductsRecommendations() {
 
-        Set viewedProducts = new HashSet<Product>();
+        Set recommendProducts = new HashSet<Product>();
 
-        for (ViewedRelationship viewedRelationship : this.productsViewedRelationships) {
-            viewedProducts.add(viewedRelationship.getProductEnd());
+        for (RecommendRelationship recommendRelationship : this.productsRecommendRelationships) {
+            recommendProducts.add(recommendRelationship.getProductEnd());
         }
 
-        return viewedProducts;
+        return recommendProducts;
     }
 
-    public void setProductsViewedRelationships(Set<ViewedRelationship> productsViewedRelationships) {
-        this.productsViewedRelationships = productsViewedRelationships;
+    public void setProductsRecommendRelationships(Set<RecommendRelationship> productsRecommendRelationships) {
+        this.productsRecommendRelationships = productsRecommendRelationships;
     }
 
-    public void addProductViewed(Product productViewed)
+    public void addProductRecommend(Product productRecommend)
     {
-        ViewedRelationship viewedRelationship = new ViewedRelationship(this, productViewed);
+        RecommendRelationship recommendRelationship = new RecommendRelationship(this, productRecommend);
 
-        if (this.productsViewedRelationships.contains(viewedRelationship))
+        if (this.productsRecommendRelationships.contains(recommendRelationship))
         {
-            for(ViewedRelationship viewedRel : this.productsViewedRelationships) {
-                if (viewedRel.getProductEnd().equals(productViewed)) {
-                    viewedRel.incrementCount();
+            for(RecommendRelationship recommendRel : this.productsRecommendRelationships) {
+                if (recommendRel.getProductEnd().equals(productRecommend)) {
+                    recommendRel.incrementCount();
                     break;
                 }
             }
         }
         else {
-            productsViewedRelationships.add(viewedRelationship);
+            productsRecommendRelationships.add(recommendRelationship);
         }
     }
 
@@ -91,7 +91,7 @@ public class Product extends IdentifiableEntity {
                 "graphId=" + this.getGraphId() +
                 ", productId=" + productId +
                 ", productName=" + productName +
-                //", #productsViewedRelationships=" + productsViewedRelationships.size() +
+                //", #productsRecommendRelationships=" + productsRecommendRelationships.size() +
                 //", #userClicked=" + usersClicked.size() +
                 '}';
     }

@@ -13,23 +13,27 @@ public interface ProductRepository extends GraphRepository<Product> {
 
     List<Product> findByProductNameLike(String productName);
 
-    @Query("START product=node:Product(productId={productId}) " +
-            "MATCH product-[viewed:VIEWED]->otherProduct " +
-            "RETURN otherProduct " +
-            "ORDER BY viewed.count DESC " +
-            "LIMIT 5 ")
-    List<Product> findOtherUsersAlsoViewedProducts(@Param("productId") String productId);
 
-    @Query("START product=node:Product(productId='*') " +
-            "RETURN distinct product " +
+    @Query("START product=node(*) " +
+            "WHERE HAS (product.productName)" +
+            "RETURN product " +
             "ORDER BY product.productName")
     List<Product> findAllProductsSortedByName();
 
+
+    @Query("START product=node:Product(productId={productId}) " +
+            "MATCH product-[recommend:RECOMMEND]->otherProduct " +
+            "RETURN otherProduct " +
+            "ORDER BY recommend.count DESC " +
+            "LIMIT 5 ")
+    List<Product> findOtherUsersAlsoViewedProducts(@Param("productId") String productId);
+
+
     @Query("START product=node:Product(productId={productId}), user=node:User(userId={userId}) " +
-            "MATCH product-[viewed:VIEWED]->otherProduct " +
+            "MATCH product-[recommend:RECOMMEND]->otherProduct " +
             "WHERE not(user-[:CLICKED]->otherProduct) " +
             "RETURN otherProduct " +
-            "ORDER BY viewed.count DESC " +
+            "ORDER BY recommend.count DESC " +
             "LIMIT 5 ")
     List<Product> findOtherUsersAlsoViewedProductsWithoutAlreadyViewed(@Param("productId") String productId, @Param("userId") String userId);
 

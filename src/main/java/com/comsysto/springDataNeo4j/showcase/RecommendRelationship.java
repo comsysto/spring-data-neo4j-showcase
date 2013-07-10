@@ -3,8 +3,8 @@ package com.comsysto.springDataNeo4j.showcase;
 import org.springframework.data.neo4j.annotation.*;
 
 
-@RelationshipEntity(type = RelationshipTypes.VIEWED)
-public class ViewedRelationship
+@RelationshipEntity(type = RelationshipTypes.RECOMMEND)
+public class RecommendRelationship
 {
     @GraphId
     private Long graphId;
@@ -19,9 +19,9 @@ public class ViewedRelationship
 
     private int count = 1;
 
-    public ViewedRelationship() {/* NOOP */}
+    public RecommendRelationship() {/* NOOP */}
 
-    public ViewedRelationship(Product productStart, Product productEnd)
+    public RecommendRelationship(Product productStart, Product productEnd)
     {
         this.productStart = productStart;
         this.productEnd = productEnd;
@@ -62,7 +62,7 @@ public class ViewedRelationship
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ViewedRelationship that = (ViewedRelationship) o;
+        RecommendRelationship that = (RecommendRelationship) o;
 
         if (productEnd != null ? !productEnd.equals(that.productEnd) : that.productEnd != null) return false;
         if (productStart != null ? !productStart.equals(that.productStart) : that.productStart != null) return false;

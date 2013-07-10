@@ -62,11 +62,11 @@ public class SpringDataNeo4jProductUserTest {
     }
 
     @Test
-    public void testProduts() {
+    public void testProducts() {
 
         //Load and check relations
         List<Product> allProducts = productRepository.findAll().as(List.class);
-        assertEquals("there should be three products in the products repository", 5, allProducts.size());
+        assertEquals("there should be five products in the products repository", 5, allProducts.size());
 
         assertTrue("saved and loaded products should be equal",
                 allProducts.contains(pizzaMargarita) && allProducts.contains(pizzaFungi) &&
@@ -74,6 +74,24 @@ public class SpringDataNeo4jProductUserTest {
                 allProducts.contains(pizzaRustica));
 
     }
+
+    @Test
+    public void testProductsSortedByName() {
+
+        //Load and check relations
+        List<Product> allProducts = productRepository.findAllProductsSortedByName();
+        assertEquals("there should be five products in the products repository", 5, allProducts.size());
+
+        assertTrue("saved and loaded products should be equal",
+                allProducts.contains(pizzaMargarita) && allProducts.contains(pizzaFungi) &&
+                        allProducts.contains(pizzaSalami) && allProducts.contains(pizzaVegitarian) &&
+                        allProducts.contains(pizzaRustica));
+
+        assertTrue("first product should be fungi in sorted order", allProducts.get(0).equals(pizzaFungi));
+
+        assertTrue("last product should be vegiatrian in sorted order", allProducts.get(allProducts.size()-1).equals(pizzaVegitarian));
+    }
+
     @Test
     public void testUsers() {
 

@@ -71,7 +71,7 @@ public class User extends IdentifiableEntity {
         ClickedRelationship clickedRelationship = new ClickedRelationship(this, clickedProduct);
 
         if (this.clickedBefore != null) {
-            this.clickedBefore.addProductViewed(clickedProduct);
+            this.clickedBefore.addProductRecommend(clickedProduct);
         }
 
         if (this.clickedProductsRelationships.contains(clickedRelationship))
