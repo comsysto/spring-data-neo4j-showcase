@@ -1,19 +1,18 @@
 package com.comsysto.neo4j.showcase.main;
 
 import com.comsysto.neo4j.showcase.model.Product;
-import com.comsysto.neo4j.showcase.repository.ProductRepository;
 import com.comsysto.neo4j.showcase.model.User;
+import com.comsysto.neo4j.showcase.repository.ProductRepository;
 import com.comsysto.neo4j.showcase.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author: rkowalewski
  */
 @Component
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class Neo4jPersister {
 
     @Autowired

@@ -12,6 +12,8 @@
     <context:spring-configured/>
     <context:annotation-config/>
 
+    <tx:annotation-driven/>
+
     <neo4j:config storeDirectory="target/data/db_main"/>
 
     <neo4j:repositories base-package="com.comsysto.neo4j.showcase.repository"/>

@@ -1,7 +1,6 @@
 package com.comsysto.neo4j.showcase.main;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.transaction.jta.JtaTransactionManager;
 
 import javax.transaction.*;
 
@@ -16,13 +15,8 @@ public class Main {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(CLASSPATH_LOCATION);
 
-        JtaTransactionManager tx = (JtaTransactionManager) context.getBean("neo4jTransactionManager");
         Neo4jPersister neo4jPersister = (Neo4jPersister) context.getBean("neo4jPersister");
 
-        tx.getTransactionManager().begin();
-
         neo4jPersister.createTestData();
-
-        tx.getTransactionManager().commit();
     }
 }
