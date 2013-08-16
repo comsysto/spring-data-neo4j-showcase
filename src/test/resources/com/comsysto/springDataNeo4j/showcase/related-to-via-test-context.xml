@@ -11,9 +11,9 @@
     <context:spring-configured/>
     <context:annotation-config/>
 
-    <neo4j:config  storeDirectory="target/data/db" graphDatabaseService="graphDatabaseService"/>
+    <neo4j:config storeDirectory="target/data/db"/>
 
-    <bean id="graphDatabaseService" class="org.neo4j.test.ImpermanentGraphDatabase" destroy-method="shutdown"/>
+    <!--<bean id="graphDatabaseService" class="org.neo4j.test.ImpermanentGraphDatabase" destroy-method="shutdown"/>-->
 
     <neo4j:repositories base-package="com.comsysto.springDataNeo4j.showcase"/>
 

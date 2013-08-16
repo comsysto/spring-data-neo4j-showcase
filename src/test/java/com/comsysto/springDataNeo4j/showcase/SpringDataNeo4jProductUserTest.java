@@ -29,8 +29,8 @@ public class SpringDataNeo4jProductUserTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    GraphDatabaseService graphDatabaseService;
+//    @Autowired
+//    GraphDatabaseService graphDatabaseService;
 
     User jordan, pippen, miller;
     Product pizzaMargarita, pizzaFungi, pizzaSalami, pizzaVegitarian, pizzaRustica;
@@ -138,8 +138,8 @@ public class SpringDataNeo4jProductUserTest {
         productRepository.save(product);
     }
 
-    @After
+//    @After
     public void cleanDB() {
-        Neo4jHelper.cleanDb(graphDatabaseService);
+//        Neo4jHelper.cleanDb(graphDatabaseService);
     }
 }
