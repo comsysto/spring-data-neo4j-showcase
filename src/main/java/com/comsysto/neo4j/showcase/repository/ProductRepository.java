@@ -1,5 +1,6 @@
-package com.comsysto.springDataNeo4j.showcase;
+package com.comsysto.neo4j.showcase.repository;
 
+import com.comsysto.neo4j.showcase.model.Product;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;

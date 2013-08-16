@@ -1,5 +1,9 @@
-package com.comsysto.springDataNeo4j.showcase;
+package com.comsysto.neo4j.showcase;
 
+import com.comsysto.neo4j.showcase.model.Product;
+import com.comsysto.neo4j.showcase.model.User;
+import com.comsysto.neo4j.showcase.repository.ProductRepository;
+import com.comsysto.neo4j.showcase.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.support.node.Neo4jHelper;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:com/comsysto/springDataNeo4j/showcase/related-to-via-test-context.xml"})
+@ContextConfiguration(locations = {"classpath:com/comsysto/neo4j/showcase/related-to-via-test-context.xml"})
 @Transactional
 public class SpringDataNeo4jProductUserTest {
 
@@ -29,8 +34,8 @@ public class SpringDataNeo4jProductUserTest {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    GraphDatabaseService graphDatabaseService;
+    @Autowired
+    GraphDatabaseService graphDatabaseService;
 
     User jordan, pippen, miller;
     Product pizzaMargarita, pizzaFungi, pizzaSalami, pizzaVegitarian, pizzaRustica;
@@ -138,8 +143,8 @@ public class SpringDataNeo4jProductUserTest {
         productRepository.save(product);
     }
 
-//    @After
+    @After
     public void cleanDB() {
-//        Neo4jHelper.cleanDb(graphDatabaseService);
+        Neo4jHelper.cleanDb(graphDatabaseService);
     }
 }

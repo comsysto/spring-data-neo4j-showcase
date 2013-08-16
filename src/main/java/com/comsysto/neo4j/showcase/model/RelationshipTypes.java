@@ -1,4 +1,4 @@
-package com.comsysto.springDataNeo4j.showcase;
+package com.comsysto.neo4j.showcase.model;
 
 /**
  * @author: rkowalewski
