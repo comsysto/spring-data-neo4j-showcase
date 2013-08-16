@@ -3,6 +3,9 @@
 *.iml
 *.iws
 
+# Neo4j
+.shell_history
+
 # Mac
 .DS_Store
 .shell_history
