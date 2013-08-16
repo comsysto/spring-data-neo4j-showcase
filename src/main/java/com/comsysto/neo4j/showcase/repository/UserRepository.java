@@ -1,5 +1,6 @@
-package com.comsysto.springDataNeo4j.showcase;
+package com.comsysto.neo4j.showcase.repository;
 
+import com.comsysto.neo4j.showcase.model.User;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
 

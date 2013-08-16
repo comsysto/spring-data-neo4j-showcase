@@ -5,6 +5,7 @@
 
 # Mac
 .DS_Store
+.shell_history
 
 # Maven
 log/
